@@ -1,0 +1,35 @@
+---
+- name: Upload certificates
+  ansible.netcommon.net_put:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest | default(omit) }}"
+    protocol: sftp
+  loop: "{{ mikrotik_certs }}"
+  no_log: true
+  tags:
+    - mikrotik_certs
+
+- name: Import certificates
+  community.routeros.command:
+    commands:
+      - "/certificate import file-name={{ item.dest }} passphrase=\"{{ item.passphrase | default('') }}\""
+  no_log: true
+  loop: "{{ mikrotik_certs }}"
+  tags:
+    - mikrotik_certs
+
+- name: Configure ip services
+  community.routeros.command:
+    commands:
+      - "/ip service set {{ item.name }} {{ item.options }}"
+  loop: "{{ mikrotik_ip_services }}"
+  tags:
+    - mikrotik_ip_services
+
+- name: Set DHCP static leases
+  community.routeros.command:
+    commands:
+      - /ip dhcp-server lease add address={{ item.address }} mac-address={{ item.mac_address }} comment={{ item.comment | default('') }}
+  loop: "{{ mikrotik_dhcp_server_leases }}"
+  tags:
+    - mikrotik_dhcp_server_leases
