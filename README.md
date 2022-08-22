@@ -35,12 +35,19 @@ mikrotik_ip_pools:
     key_value: dhcp
     other_values: ranges=192.168.1.100-192.168.1.254
 ```
-* `mikrotik_dhcp_server_leases` - list of DHCP server leases, example:
+* `mikrotik_ip_dhcp_server_leases` - list of DHCP server leases, example:
 ```yaml
-mikrotik_dhcp_server_leases:
+mikrotik_ip_dhcp_server_leases:
   - key_name: mac-address
     key_value: 70:85:C2:A9:B2:FF
     other_values: address=192.168.1.2 comment=myserver
+```
+* `mikrotik_ip_dns_statics` - list of static IP DNS records, example:
+```yaml
+mikrotik_ip_dns_statics:
+  - key_name: name
+    key_value: www.myserver.com
+    other_values: address=192.168.1.2
 ```
 
 Dependencies
