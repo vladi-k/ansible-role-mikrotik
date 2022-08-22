@@ -24,16 +24,23 @@ mikrotik_certs:
 ```yaml
 mikrotik_ip_services:
   - name: www-ssl
-    options: certificate=myserver tls-version=only-1.2 disabled=no
+    values: certificate=myserver tls-version=only-1.2 disabled=no
   - name: www
-    options: disabled=yes
+    values: disabled=yes
+```
+* `mikrotik_ip_pools` - list of IP pools, example:
+```yaml
+mikrotik_ip_pools:
+  - key_name: name
+    key_value: dhcp
+    other_values: ranges=192.168.1.100-192.168.1.254
 ```
 * `mikrotik_dhcp_server_leases` - list of DHCP server leases, example:
 ```yaml
 mikrotik_dhcp_server_leases:
-  - address: 192.168.1.2
-    mac_address: 70:85:C2:A9:B2:F7
-    comment: myserver
+  - key_name: mac-address
+    key_value: 70:85:C2:A9:B2:FF
+    other_values: address=192.168.1.2 comment=myserver
 ```
 
 Dependencies
