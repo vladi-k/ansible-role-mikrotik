@@ -1,4 +1,6 @@
 ---
 mikrotik_certs: []
 mikrotik_ip_services: []
-mikrotik_dhcp_server_leases: []
+mikrotik_ip_pools: []
+mikrotik_ip_dhcp_server_leases: []
+mikrotik_ip_dns_statics: []

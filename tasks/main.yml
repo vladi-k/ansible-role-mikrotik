@@ -46,6 +46,18 @@
          } else={
           /ip dhcp-server lease set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
          }"
-  loop: "{{ mikrotik_dhcp_server_leases }}"
+  loop: "{{ mikrotik_ip_dhcp_server_leases }}"
   tags:
-    - mikrotik_dhcp_server_leases
+    - mikrotik_ip_dhcp_server_leases
+
+- name: Set static DNS entries
+  community.routeros.command:
+    commands:
+      - ":if ([/ip dns static print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={
+          /ip dns static add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
+         } else={
+          /ip dns static set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
+         }"
+  loop: "{{ mikrotik_ip_dns_statics }}"
+  tags:
+    - mikrotik_ip_dns_statics
