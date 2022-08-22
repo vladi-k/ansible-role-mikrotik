@@ -21,15 +21,31 @@
 - name: Configure ip services
   community.routeros.command:
     commands:
-      - "/ip service set {{ item.name }} {{ item.options }}"
+      - "/ip service set {{ item.name }} {{ item.values }}"
   loop: "{{ mikrotik_ip_services }}"
   tags:
     - mikrotik_ip_services
 
+- name: Configure ip pools
+  community.routeros.command:
+    commands:
+      - ":if ([/ip pool print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={
+          /ip pool add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
+         } else={
+          /ip pool set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
+         }"
+  loop: "{{ mikrotik_ip_pools }}"
+  tags:
+    - mikrotik_ip_pools
+
 - name: Set DHCP static leases
   community.routeros.command:
     commands:
-      - /ip dhcp-server lease add address={{ item.address }} mac-address={{ item.mac_address }} comment={{ item.comment | default('') }}
+      - ":if ([/ip dhcp-server lease print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={
+          /ip dhcp-server lease add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
+         } else={
+          /ip dhcp-server lease set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
+         }"
   loop: "{{ mikrotik_dhcp_server_leases }}"
   tags:
     - mikrotik_dhcp_server_leases
