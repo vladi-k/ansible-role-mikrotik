@@ -18,15 +18,39 @@
   tags:
     - mikrotik_certs
 
-- name: Configure ip services
+- name: Configure IP addresses
   community.routeros.command:
     commands:
-      - "/ip service set {{ item.name }} {{ item.values }}"
+      - ":if ([/ip address print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={
+          /ip address add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
+         } else={
+          /ip address set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
+         }"
+  loop: "{{ mikrotik_ip_addresses }}"
+  tags:
+    - mikrotik_ip_addresses
+
+- name: Configure IP DHCP server networks
+  community.routeros.command:
+    commands:
+      - ":if ([/ip dhcp-server network print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={
+          /ip dhcp-server network add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
+         } else={
+          /ip dhcp-server network set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
+         }"
+  loop: "{{ mikrotik_ip_dhcp_server_networks }}"
+  tags:
+    - mikrotik_ip_dhcp_server_networks
+
+- name: Configure IP services
+  community.routeros.command:
+    commands:
+      - "/ip service set {{ item.name }} {{ item.settings }}"
   loop: "{{ mikrotik_ip_services }}"
   tags:
     - mikrotik_ip_services
 
-- name: Configure ip pools
+- name: Configure IP pools
   community.routeros.command:
     commands:
       - ":if ([/ip pool print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={

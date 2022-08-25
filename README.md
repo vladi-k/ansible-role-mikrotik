@@ -20,7 +20,21 @@ mikrotik_certs:
     dest: myserver.key
     passphrase: verysecure
 ```
-* `mikrotik_ip_services` - list of ip services to set, example:
+* `mikrotik_ip_addresses` - list of IP addresses, example:
+```yaml
+mikrotik_ip_addresses:
+  - key_name: interface
+    key_value: bridge
+    other_values: address=192.168.1.1/24
+```
+* `mikrotik_ip_dhcp_server_networks` - list of DHCP Server network options, example:
+```yaml
+mikrotik_ip_dhcp_server_networks:
+  - key_name: comment
+    key_value: defconf
+    other_values: address=192.168.1.0/24 gateway=192.168.1.1 dns-server=192.168.1.1
+```
+* `mikrotik_ip_services` - list of IP services to set, example:
 ```yaml
 mikrotik_ip_services:
   - name: www-ssl
