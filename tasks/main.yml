@@ -12,7 +12,7 @@
 - name: Import certificates
   community.routeros.command:
     commands:
-      - "/certificate import file-name={{ item.dest }} passphrase=\"{{ item.passphrase | default('') }}\""
+      - '/certificate import file-name={{ item.dest }} passphrase="{{ item.passphrase | default('''') }}"'
   no_log: true
   loop: "{{ mikrotik_certs }}"
   tags:
@@ -22,10 +22,10 @@
   community.routeros.command:
     commands:
       - ":if ([/ip address print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={
-          /ip address add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
-         } else={
-          /ip address set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
-         }"
+        /ip address add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
+        } else={
+        /ip address set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
+        }"
   loop: "{{ mikrotik_ip_addresses }}"
   tags:
     - mikrotik_ip_addresses
@@ -33,11 +33,11 @@
 - name: Configure IP DHCP server networks
   community.routeros.command:
     commands:
-      - ":if ([/ip dhcp-server network print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={
-          /ip dhcp-server network add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
-         } else={
-          /ip dhcp-server network set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
-         }"
+      - ':if ([/ip dhcp-server network print count-only where {{ item.key_name }}="{{ item.key_value }}"]=0) do={
+        /ip dhcp-server network add {{ item.key_name }}="{{ item.key_value }}" {{ item.other_values }}
+        } else={
+        /ip dhcp-server network set [find where {{ item.key_name }}="{{ item.key_value }}"] {{ item.other_values }}
+        }'
   loop: "{{ mikrotik_ip_dhcp_server_networks }}"
   tags:
     - mikrotik_ip_dhcp_server_networks
@@ -54,10 +54,10 @@
   community.routeros.command:
     commands:
       - ":if ([/ip pool print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={
-          /ip pool add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
-         } else={
-          /ip pool set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
-         }"
+        /ip pool add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
+        } else={
+        /ip pool set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
+        }"
   loop: "{{ mikrotik_ip_pools }}"
   tags:
     - mikrotik_ip_pools
@@ -66,10 +66,10 @@
   community.routeros.command:
     commands:
       - ":if ([/ip dhcp-server lease print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={
-          /ip dhcp-server lease add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
-         } else={
-          /ip dhcp-server lease set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
-         }"
+        /ip dhcp-server lease add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
+        } else={
+        /ip dhcp-server lease set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
+        }"
   loop: "{{ mikrotik_ip_dhcp_server_leases }}"
   tags:
     - mikrotik_ip_dhcp_server_leases
@@ -78,10 +78,10 @@
   community.routeros.command:
     commands:
       - ":if ([/ip dns static print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={
-          /ip dns static add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
-         } else={
-          /ip dns static set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
-         }"
+        /ip dns static add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
+        } else={
+        /ip dns static set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
+        }"
   loop: "{{ mikrotik_ip_dns_statics }}"
   tags:
     - mikrotik_ip_dns_statics
