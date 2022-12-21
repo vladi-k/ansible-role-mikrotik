@@ -42,6 +42,18 @@
   tags:
     - mikrotik_ip_dhcp_server_networks
 
+- name: Configure IP DHCP clients
+  community.routeros.command:
+    commands:
+      - ':if ([/ip dhcp-client print count-only where {{ item.key_name }}="{{ item.key_value }}"]=0) do={
+        /ip dhcp-client add {{ item.key_name }}="{{ item.key_value }}" {{ item.other_values }}
+        } else={
+        /ip dhcp-client set [find where {{ item.key_name }}="{{ item.key_value }}"] {{ item.other_values }}
+        }'
+  loop: "{{ mikrotik_ip_dhcp_clients }}"
+  tags:
+    - mikrotik_ip_dhcp_clients
+
 - name: Configure IP services
   community.routeros.command:
     commands:
@@ -85,3 +97,11 @@
   loop: "{{ mikrotik_ip_dns_statics }}"
   tags:
     - mikrotik_ip_dns_statics
+
+- name: Configure IP DNS
+  community.routeros.command:
+    commands:
+      - "/ip dns set {{ mikrotik_ip_dns }}"
+  when: mikrotik_ip_dns != ""
+  tags:
+    - mikrotik_ip_dns

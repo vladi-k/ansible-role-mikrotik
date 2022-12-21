@@ -34,6 +34,13 @@ mikrotik_ip_dhcp_server_networks:
     key_value: defconf
     other_values: address=192.168.1.0/24 gateway=192.168.1.1 dns-server=192.168.1.1
 ```
+* `mikrotik_ip_dhcp_clients` - list of DHCP clients, example:
+```yaml
+mikrotik_ip_dhcp_clients:
+  - key_name: interface
+    key_value: ether1
+    other_values: add-default-route=yes use-peer-dns=no
+```
 * `mikrotik_ip_services` - list of IP services to set, example:
 ```yaml
 mikrotik_ip_services:
@@ -62,6 +69,10 @@ mikrotik_ip_dns_statics:
   - key_name: name
     key_value: www.myserver.com
     other_values: address=192.168.1.2
+```
+* `mikrotik_ip_dns` - configure IP DNS, example:
+```yaml
+mikrotik_ip_dns: use-doh-server=https://freedns.controld.com/p2 verify-doh-cert=yes allow-remote-requests=yes
 ```
 
 Dependencies
