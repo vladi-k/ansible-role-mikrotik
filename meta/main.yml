@@ -1,5 +1,7 @@
 ---
 galaxy_info:
+  role_name: mikrotik
+  namespace: vladi_k
   author: Vladimir Vasilev (@vladi-k)
   description: Configures MikroTik routers
   license: GPLv3
