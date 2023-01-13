@@ -105,3 +105,15 @@
   when: mikrotik_ip_dns != ""
   tags:
     - mikrotik_ip_dns
+
+- name: Configure OpenVPN clients
+  community.routeros.command:
+    commands:
+      - ":if ([/interface ovpn-client print count-only where {{ item.key_name }}={{ item.key_value }}]=0) do={
+        /interface ovpn-client add {{ item.key_name }}={{ item.key_value }} {{ item.other_values }}
+        } else={
+        /interface ovpn-client set [find where {{ item.key_name }}={{ item.key_value }}] {{ item.other_values }}
+        }"
+  loop: "{{ mikrotik_interface_ovpn_clients }}"
+  tags:
+    - mikrotik_interface_ovpn_clients

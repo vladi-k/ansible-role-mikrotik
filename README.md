@@ -74,7 +74,13 @@ mikrotik_ip_dns_statics:
 ```yaml
 mikrotik_ip_dns: use-doh-server=https://freedns.controld.com/p2 verify-doh-cert=yes allow-remote-requests=yes
 ```
-
+* `mikrotik_interface_ovpn_clients` - configure OpenVPN client interface, example:
+```yaml
+mikrotik_interface_ovpn_clients:
+  - key_name: name
+    key_value: ovpn-client
+    other_values: connect-to=vpn.acme.com port=1194 protocol=udp mode=ip profile=default certificate=mikrotik.crt_0 cipher=aes256 tls-version=only-1.2 use-peer-dns=no add-default-route=no user=mikrotik auth=sha256
+```
 Dependencies
 ------------
 
