@@ -81,6 +81,23 @@ mikrotik_interface_ovpn_clients:
     key_value: ovpn-client
     other_values: connect-to=vpn.acme.com port=1194 protocol=udp mode=ip profile=default certificate=mikrotik.crt_0 cipher=aes256 tls-version=only-1.2 use-peer-dns=no add-default-route=no user=mikrotik auth=sha256
 ```
+* `mikrotik_ip_firewall_rules` - configures IP Firewall rules. Relies on comments, example:
+```yaml
+mikrotik_ip_firewall_rules:
+  - type: filter
+    comment: allow established,related
+    rule: chain=input action=accept connection-state=established,related
+  - type: filter
+    comment: allow all internal network
+    rule: chain=input action=accept src-address=192.168.88.0/24
+  - type: filter
+    comment: drop everything else
+    rule: chain=input action=drop
+  - type: nat
+    comment: NAT all internal network
+    rule: chain=srcnat action=masquerade out-interface-list=WAN
+```
+
 Dependencies
 ------------
 

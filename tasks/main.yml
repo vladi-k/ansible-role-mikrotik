@@ -117,3 +117,15 @@
   loop: "{{ mikrotik_interface_ovpn_clients }}"
   tags:
     - mikrotik_interface_ovpn_clients
+
+- name: Configure IP firewall rules
+  community.routeros.command:
+    commands:
+      - ':if ([/ip firewall {{ item.type }} print count-only where comment="{{ item.comment }}"]=0) do={
+        /ip firewall {{ item.type }} add comment="{{ item.comment }}" {{ item.rule }}
+        } else={
+        /ip firewall {{ item.type }} set [find where comment="{{ item.comment }}"] {{ item.rule }}
+        }'
+  loop: "{{ mikrotik_ip_firewall_rules }}"
+  tags:
+    - mikrotik_ip_firewall_rules
